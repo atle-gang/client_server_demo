@@ -40,14 +40,14 @@ public class ClientHandler implements Runnable {
     public void run() {
         String messageFromClient;
 
-        try {
-            while (socket.isConnected()) {
+        while (socket.isConnected()) {
+            try {
                 messageFromClient = bufferedReader.readLine();
                 broadCastMessage(messageFromClient);
-            } 
-        } catch (IOException e) {
-            closeEverything(socket, bufferedReader, bufferedReader);
-            break;
+            } catch (IOException e) {
+                closeEverything(socket, bufferedReader, bufferedWriter);    
+                break;
+            }
         }
     }
 
