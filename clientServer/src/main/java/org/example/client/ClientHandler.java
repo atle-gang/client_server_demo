@@ -18,7 +18,7 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private String clientUserName;
+    private String clientUsername;
 
 
     public ClientHandler(Socket socket) { 
@@ -26,9 +26,9 @@ public class ClientHandler implements Runnable {
             this.socket = socket;
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            this.clientUserName = bufferedReader.readLine();
+            this.clientUsername = bufferedReader.readLine();
             clientHandlers.add(this);
-            broadCastMessage("SERVER: " + clientHandlers + " has entered joined the server");
+            broadcastMessage("SERVER: " + clientUsername + " has entered joined the server.");
         } catch (IOException e) {
             // closeEverything() will close streams and socket
             closeEverything(socket, bufferedReader, bufferedWriter);
@@ -43,7 +43,7 @@ public class ClientHandler implements Runnable {
         while (socket.isConnected()) {
             try {
                 messageFromClient = bufferedReader.readLine();
-                broadCastMessage(messageFromClient);
+                broadcastMessage(messageFromClient);
             } catch (IOException e) {
                 closeEverything(socket, bufferedReader, bufferedWriter);    
                 break;
@@ -51,10 +51,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void broadCastMessage(String messageToSend) {
+    public void broadcastMessage(String messageToSend) {
         for (ClientHandler clientHandler: clientHandlers) {
             try {
-                if (!this.clientUserName.equals(clientUserName)) {
+                if (!clientHandler.clientUsername.equals(clientUsername)) {
                     clientHandler.bufferedWriter.write(messageToSend);
                     /** Because on the client, they'll be waiting on a new line, because they'll be using readLine(),
                      * we need to explicitly send a new line character.
@@ -77,7 +77,7 @@ public class ClientHandler implements Runnable {
     // Signals that user has left the chat. It will display for users still in the user that a user has left the server.
     public void removeClientHandler() {
         clientHandlers.remove(this);
-        System.out.println("SERVER: " + clientUserName + " has left the server.");
+        System.out.println("SERVER: " + clientUsername + " has left the server.");
     }
 
     // Used to close down client-server connection and our streams
