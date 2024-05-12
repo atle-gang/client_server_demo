@@ -18,6 +18,7 @@ public class Server {
     */
 
     public void startServer() {
+        System.out.println("Server running and waiting for client connections...");
         try {
             while (!serverSocket.isClosed()) {
                 // Waiting fo the client to connect - read other example I did if I don't remember this blocking method 
