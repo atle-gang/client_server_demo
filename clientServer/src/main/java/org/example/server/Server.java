@@ -24,7 +24,7 @@ public class Server {
                 // Waiting fo the client to connect - read other example I did if I don't remember this blocking method 
                 Socket socket = serverSocket.accept();
                 System.out.println("A new client has connected..");
-                /** Each instance of this class, 'Clienthandler', will be responsible for communicating with a client 
+                /** Each instance of this class, 'ClientHandler', will be responsible for communicating with a client 
                  * This class will also implement the interface Runnable
                  * Runnable is implemented on a class whose instances will be executed by a separate thread - Handle multiple clients
                 */
